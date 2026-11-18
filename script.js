@@ -54,6 +54,29 @@
   }, { threshold: 0.15, rootMargin: '0px 0px -6% 0px' });
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
+  /* ---------- Site-wide parallax (uses the CSS `translate` property so it never clashes with transform) ---------- */
+  const pxEls = reduce ? [] : [...document.querySelectorAll('[data-parallax]')].map(el => ({
+    el,
+    speed: parseFloat(el.dataset.parallax) || 0,
+    max: parseFloat(el.dataset.pmax) || 70,
+    cur: 0
+  }));
+  function parallax() {
+    const vh = innerHeight;
+    const reads = [];
+    for (const it of pxEls) {
+      const r = it.el.getBoundingClientRect();
+      if (r.bottom < -200 || r.top > vh + 200) continue;
+      // rect includes our current offset; remove it to get the resting position
+      const delta = (r.top - it.cur + r.height / 2) - vh / 2;
+      reads.push([it, Math.max(-it.max, Math.min(it.max, -delta * it.speed))]);
+    }
+    for (const [it, v] of reads) {
+      it.cur = v;
+      it.el.style.translate = '0 ' + v.toFixed(1) + 'px';
+    }
+  }
+
   /* ---------- Scroll-driven effects (one rAF-throttled handler) ---------- */
   const track = document.getElementById('curtain-track');
   const stage = track.querySelector('.curtain-stage');
@@ -67,6 +90,7 @@
     bar.style.transform = 'scaleX(' + (total > 0 ? Math.min(1, y / total) : 0).toFixed(4) + ')';
     // hero parallax
     if (!reduce && y < innerHeight * 1.2) heroBg.style.transform = 'translate3d(0,' + (y * 0.25).toFixed(1) + 'px,0)';
+    parallax();
     // curtains
     const r = track.getBoundingClientRect();
     const span = track.offsetHeight - innerHeight;
@@ -103,26 +127,6 @@
   }
   tickCountdown();
   setInterval(tickCountdown, 1000);
-
-  /* ---------- Add to calendar (.ics, all-day) ---------- */
-  document.getElementById('ics-btn').addEventListener('click', () => {
-    const ics = [
-      'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Wedding Invitation//EN',
-      'BEGIN:VEVENT',
-      'UID:shahanas-mirza-20261226@wedding',
-      'DTSTAMP:20260101T000000Z',
-      'DTSTART;VALUE=DATE:20261226',
-      'DTEND;VALUE=DATE:20261227',
-      'SUMMARY:Wedding of Shahanas & Mirza',
-      'LOCATION:RV Palace\\, CV Jn.\\, Ponnani',
-      'END:VEVENT', 'END:VCALENDAR'
-    ].join('\r\n');
-    const url = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' }));
-    const a = document.createElement('a');
-    a.href = url; a.download = 'wedding-invitation.ics';
-    document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-  });
 
   /* ---------- Invitation card modal ---------- */
   const modal = document.getElementById('modal');

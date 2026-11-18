@@ -301,7 +301,7 @@ body:not(.locked) .hero-text>:nth-child(6){animation-delay:2.3s}
 .polaroid.now.in{transform:rotate(3deg) translateY(28px)}
 .polaroid.in:hover{transform:rotate(0) scale(1.03);z-index:3;box-shadow:0 34px 70px rgba(0,0,0,.6)}
 .polaroid .pic{aspect-ratio:5/4;overflow:hidden;background:#222}
-.polaroid img{width:100%;height:100%;object-fit:cover;transition:transform 1.6s var(--ease)}
+.polaroid img{width:100%;height:calc(100% + 40px);margin-top:-20px;object-fit:cover;transition:transform 1.6s var(--ease)}
 .polaroid.then img{object-position:58% 50%}
 .polaroid.now img{object-position:50% 74%}
 .polaroid:hover img{transform:scale(1.07)}
@@ -310,6 +310,20 @@ body:not(.locked) .hero-text>:nth-child(6){animation-delay:2.3s}
 .polaroid figcaption span{font-style:italic;font-size:1rem;opacity:.8}
 .tape{position:absolute;top:-14px;left:50%;width:90px;height:28px;margin-left:-45px;background:rgba(227,185,92,.55);transform:rotate(-3deg);box-shadow:0 2px 6px rgba(0,0,0,.2)}
 .story-line{text-align:center;font-style:italic;font-size:clamp(1.15rem,3.2vw,1.6rem);color:var(--gold-2);margin-top:5rem}
+
+/* ---------- Parallax depth layers (glow orbs + gold dust behind content) ---------- */
+.orbs{position:absolute;inset:0;z-index:0;pointer-events:none}
+.orb{position:absolute;display:block;border-radius:50%;
+  background:radial-gradient(circle,rgba(227,185,92,.16),rgba(227,185,92,0) 68%)}
+.orb.o1{width:clamp(200px,34vw,380px);aspect-ratio:1;top:6%;left:-8%}
+.orb.o2{width:clamp(160px,26vw,300px);aspect-ratio:1;bottom:4%;right:-6%;
+  background:radial-gradient(circle,rgba(196,29,51,.22),rgba(196,29,51,0) 68%)}
+.dust{position:absolute;display:block;width:6px;height:6px;border-radius:50%;background:var(--gold-2);
+  box-shadow:0 0 12px 3px rgba(246,220,155,.55);opacity:.55}
+.dust.d1{top:18%;right:12%}
+.dust.d2{top:52%;left:9%;width:4px;height:4px}
+.dust.d3{bottom:14%;right:30%;width:5px;height:5px}
+.hero-photo,.hero-text,.invite-panel,.flo,.info,.card-frame,.polaroid,.polaroid .pic img,.script-title,.orb,.dust{will-change:translate}
 
 /* ---------- Curtain scroll reveal ---------- */
 .curtain-track{height:230vh}
