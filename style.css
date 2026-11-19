@@ -292,24 +292,27 @@ body:not(.locked) .hero-text>:nth-child(6){animation-delay:2.3s}
 .invite-name{font-family:var(--script);font-weight:400;font-size:clamp(2.8rem,11vw,5.2rem);line-height:1.15;white-space:nowrap}
 .invite .and{font-family:var(--caps);font-style:normal;letter-spacing:.4em;font-size:.9rem;margin:.1rem 0}
 
-/* ---------- Then & Now ---------- */
-.then-now{padding:8vh 0 5vh;overflow:hidden}
-.polaroids{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,5vw,60px);align-items:start;max-width:880px;margin:0 auto}
-.polaroid{position:relative;background:#fbf3e2;padding:14px 14px 0;border-radius:6px;color:var(--maroon-2);
-  box-shadow:0 24px 50px rgba(0,0,0,.5);transition:transform 1.2s var(--ease) var(--d,0s),opacity 1.2s var(--ease) var(--d,0s),filter 1.2s var(--ease) var(--d,0s),box-shadow .6s}
-.polaroid.then.in{transform:rotate(-3.5deg)}
-.polaroid.now.in{transform:rotate(3deg) translateY(28px)}
-.polaroid.in:hover{transform:rotate(0) scale(1.03);z-index:3;box-shadow:0 34px 70px rgba(0,0,0,.6)}
-.polaroid .pic{aspect-ratio:5/4;overflow:hidden;background:#222}
-.polaroid img{width:100%;height:calc(100% + 40px);margin-top:-20px;object-fit:cover;transition:transform 1.6s var(--ease)}
-.polaroid.then img{object-position:58% 50%}
-.polaroid.now img{object-position:50% 74%}
-.polaroid:hover img{transform:scale(1.07)}
-.polaroid figcaption{text-align:center;padding:10px 0 14px;display:flex;flex-direction:column;line-height:1.2}
-.polaroid figcaption b{font-weight:400;font-size:2.6rem;color:var(--wine)}
-.polaroid figcaption span{font-style:italic;font-size:1rem;opacity:.8}
-.tape{position:absolute;top:-14px;left:50%;width:90px;height:28px;margin-left:-45px;background:rgba(227,185,92,.55);transform:rotate(-3deg);box-shadow:0 2px 6px rgba(0,0,0,.2)}
-.story-line{text-align:center;font-style:italic;font-size:clamp(1.15rem,3.2vw,1.6rem);color:var(--gold-2);margin-top:5rem}
+/* ---------- Duo (polaroids pegged on a string) ---------- */
+.duo{padding:8vh 0 6vh;overflow:hidden}
+.duo-pics{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,3vw,40px);max-width:940px;margin:2.4rem auto 0}
+.duo-fig{position:relative}
+/* the string the polaroids hang from */
+.duo-fig::before{content:"";position:absolute;left:-20px;right:-20px;top:12px;height:2px;background:linear-gradient(90deg,var(--gold-3),var(--gold-2),var(--gold-3));box-shadow:0 2px 5px rgba(0,0,0,.4)}
+.duo-float{--r:-2.5deg;position:relative;padding-top:16px;transform-origin:50% 8px;animation:duo-sway 6s ease-in-out infinite}
+.duo-fig.b .duo-float{--r:2.5deg;animation-delay:-3s}
+/* wooden peg */
+.duo-float::before{content:"";position:absolute;z-index:2;top:0;left:50%;width:16px;height:38px;margin-left:-8px;border-radius:3px;
+  background:linear-gradient(90deg,#c89a5b,#e6bf86,#b88646);box-shadow:0 3px 6px rgba(0,0,0,.45)}
+.duo-float::after{content:"";position:absolute;z-index:3;top:17px;left:50%;width:16px;height:2px;margin-left:-8px;background:rgba(60,35,10,.55)}
+.duo-ring{background:#fbf3e2;padding:clamp(10px,2vw,18px) clamp(10px,2vw,18px) clamp(44px,9vw,84px);border-radius:4px;color:var(--maroon-2);box-shadow:0 22px 44px rgba(0,0,0,.55);transition:transform 1s var(--ease)}
+.duo-pic{aspect-ratio:1/1;overflow:hidden;background:#222}
+.duo-pic img{display:block;width:100%;height:100%;object-fit:cover;transition:transform 1.6s var(--ease)}
+.duo-fig.a img{object-position:55% 50%}
+.duo-fig.b img{object-position:50% 45%}
+.duo-fig:hover .duo-ring{transform:scale(1.03)}
+.duo-fig:hover img{transform:scale(1.06)}
+@keyframes duo-sway{0%,100%{transform:rotate(calc(var(--r) - 1.5deg))}50%{transform:rotate(calc(var(--r) + 1.5deg))}}
+.story-line{text-align:center;font-style:italic;font-size:clamp(1.1rem,3vw,1.5rem);line-height:1.5;color:var(--gold-2);margin-top:3.5rem}
 
 /* ---------- Parallax depth layers (glow orbs + gold dust behind content) ---------- */
 .orbs{position:absolute;inset:0;z-index:0;pointer-events:none}
@@ -323,7 +326,7 @@ body:not(.locked) .hero-text>:nth-child(6){animation-delay:2.3s}
 .dust.d1{top:18%;right:12%}
 .dust.d2{top:52%;left:9%;width:4px;height:4px}
 .dust.d3{bottom:14%;right:30%;width:5px;height:5px}
-.hero-photo,.hero-text,.invite-panel,.flo,.info,.card-frame,.polaroid,.polaroid .pic img,.script-title,.orb,.dust{will-change:translate}
+.hero-photo,.hero-text,.invite-panel,.flo,.info,.card-frame,.script-title,.orb,.dust{will-change:translate}
 
 /* ---------- Curtain scroll reveal ---------- */
 .curtain-track{height:230vh}
@@ -414,8 +417,8 @@ body:not(.locked) .hero-text>:nth-child(6){animation-delay:2.3s}
 @media (max-width:720px){
   body{font-size:18px}
   .reveal.from-left,.reveal.from-right{transform:translate3d(0,46px,0)}
-  .polaroids{grid-template-columns:1fr;gap:44px;max-width:340px}
-  .polaroid.now.in{transform:rotate(3deg)}
+  .duo-pics{grid-template-columns:1fr;gap:40px;max-width:min(86vw,380px);margin-top:1.6rem}
+  .duo-fig::before{left:-12px;right:-12px}
   .story-line{margin-top:3rem}
 }
 /* ---------- Responsive: phones, small phones, landscape, touch ---------- */
@@ -434,7 +437,7 @@ body:not(.locked) .hero-text>:nth-child(6){animation-delay:2.3s}
   .eyebrow{letter-spacing:.2em;font-size:.66rem}
   .script-title{font-size:clamp(2.2rem,10vw,3rem)}
   .script-title.huge{font-size:clamp(2.6rem,12.5vw,4rem)}
-  .then-now{padding-top:6vh}
+  .duo{padding-top:6vh}
   .story-line{margin-top:2.6rem;padding:0 6px}
   .countdown{padding-top:7vh}
   .timer{gap:8px}
@@ -466,7 +469,7 @@ body:not(.locked) .hero-text>:nth-child(6){animation-delay:2.3s}
   .timer span{font-size:.48rem}
   .btn{width:100%;text-align:center}
   .actions{flex-direction:column;align-items:stretch}
-  .polaroids{max-width:300px}
+  .duo-pics{max-width:88vw}
 }
 @media (max-width:340px){
   .intro-names{font-size:2.1rem}
@@ -492,13 +495,8 @@ body:not(.locked) .hero-text>:nth-child(6){animation-delay:2.3s}
 @media (hover:none){
   .royal-envelope:hover{transform:none}
   .info.in:hover,.card-frame.in:hover{transform:none}
-  .polaroid.then.in:hover{transform:rotate(-3.5deg)}
-  .polaroid.now.in:hover{transform:rotate(3deg) translateY(28px)}
-  .polaroid:hover img{transform:none}
+  .duo-fig:hover .duo-ring,.duo-fig:hover img{transform:none}
   .btn:hover{transform:none}
-}
-@media (hover:none) and (max-width:720px){
-  .polaroid.now.in:hover{transform:rotate(3deg)}
 }
 
 
